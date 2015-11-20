@@ -52,22 +52,22 @@ var Calculator;
                 _this._curInput = parseInt(document.getElementById("CalcInput").value);
             };
             this.validateValues = function (operation) {
-                if (isNaN(_this._curInput)) {
-                    document.getElementById("operationSymbol").innerHTML = _this._operationIcons[operation];
-                    return;
-                }
-
-                if (!isNaN(_this._valFromMem)) {
-                    var result = _this.calculateOperation(_this._valFromMem, _this._curInput, operation);
-                    document.getElementById("memory").innerHTML = "" + result;
-                } else {
-                    document.getElementById("memory").innerHTML = "" + _this._curInput;
-                }
-
                 var inputElement = document.getElementById('CalcInput');
+                var memElement = document.getElementById("memory");
+                var symbolElement = document.getElementById("operationSymbol");
+
+                if (isNaN(_this._curInput)) {
+                    inputElement.innerHTML = _this._operationIcons[operation];
+                } else if (!isNaN(_this._valFromMem)) {
+                    var result = _this.calculateOperation(_this._valFromMem, _this._curInput, operation);
+                    memElement.innerHTML = "" + result;
+                } else {
+                    memElement.innerHTML = "" + _this._curInput;
+                }
+
                 inputElement.value = "";
                 inputElement.focus();
-                document.getElementById("operationSymbol").innerHTML = _this._operationIcons[operation];
+                symbolElement.innerHTML = _this._operationIcons[operation];
             };
             this.element = element;
             this.operation = operation;

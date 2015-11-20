@@ -70,22 +70,22 @@ module Calculator {
         }
 
         validateValues = (operation: string): void => {
-            if (isNaN(this._curInput)) {
-                document.getElementById("operationSymbol").innerHTML = this._operationIcons[operation];
-                return;
-            }
-
-            if (!isNaN(this._valFromMem)) {
-                var result = this.calculateOperation(this._valFromMem, this._curInput, operation);
-                document.getElementById("memory").innerHTML = "" + result;
-            } else {
-                document.getElementById("memory").innerHTML = "" + this._curInput;
-            }
-
             var inputElement = <HTMLInputElement>document.getElementById('CalcInput');
+            var memElement = <HTMLInputElement>document.getElementById("memory");
+            var symbolElement = <HTMLInputElement>document.getElementById("operationSymbol")
+
+            if (isNaN(this._curInput)) {
+                inputElement.innerHTML = this._operationIcons[operation];
+            } else if (!isNaN(this._valFromMem)) {
+                var result = this.calculateOperation(this._valFromMem, this._curInput, operation);
+                memElement.innerHTML = "" + result;
+            } else {
+                memElement.innerHTML = "" + this._curInput;
+            }
+
             inputElement.value = "";
             inputElement.focus();
-            document.getElementById("operationSymbol").innerHTML = this._operationIcons[operation];
+            symbolElement.innerHTML = this._operationIcons[operation];
         }
     }
 }
