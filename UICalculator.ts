@@ -10,6 +10,8 @@ module Calculator {
             "multiplication": "*",
             "division": "/"
         }
+        private _valFromMem: number;
+        private _curInput: number;
 
         constructor(element: HTMLElement, operation: IOperation) {
             this.element = element;
@@ -58,24 +60,31 @@ module Calculator {
         }
 
         operationOnClick = (e): void => {
-            this.getInputValues(e.target.name);
+            this.getValues(e.target.name);
+            this.validateValues(e.target.name);
         }
 
-        getInputValues = (operation): void => {
-            var valueFromMemory = parseInt((<HTMLInputElement>document.getElementById("memory")).innerHTML);
-            var currentInput = parseInt((<HTMLInputElement>document.getElementById("CalcInput")).value);
+        getValues = (operation: string): void => {
+            this._valFromMem = parseInt((<HTMLInputElement>document.getElementById("memory")).innerHTML);
+            this._curInput = parseInt((<HTMLInputElement>document.getElementById("CalcInput")).value);
+        }
 
-            if (currentInput)
+        validateValues = (operation: string): void => {
+            if (isNaN(this._curInput)) {
+                document.getElementById("operationSymbol").innerHTML = this._operationIcons[operation];
+                return;
+            }
 
-            if (!isNaN(valueFromMemory)) {
-                var result = this.calculateOperation(valueFromMemory, currentInput, operation);
+            if (!isNaN(this._valFromMem)) {
+                var result = this.calculateOperation(this._valFromMem, this._curInput, operation);
                 document.getElementById("memory").innerHTML = "" + result;
             } else {
-                document.getElementById("memory").innerHTML = "" + currentInput;
+                document.getElementById("memory").innerHTML = "" + this._curInput;
             }
 
             var inputElement = <HTMLInputElement>document.getElementById('CalcInput');
             inputElement.value = "";
+            inputElement.focus();
             document.getElementById("operationSymbol").innerHTML = this._operationIcons[operation];
         }
     }

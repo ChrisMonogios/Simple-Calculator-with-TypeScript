@@ -44,21 +44,29 @@ var Calculator;
                 return result;
             };
             this.operationOnClick = function (e) {
-                _this.getInputValues(e.target.name);
+                _this.getValues(e.target.name);
+                _this.validateValues(e.target.name);
             };
-            this.getInputValues = function (operation) {
-                var valueFromMemory = parseInt(document.getElementById("memory").innerHTML);
-                var currentInput = parseInt(document.getElementById("CalcInput").value);
+            this.getValues = function (operation) {
+                _this._valFromMem = parseInt(document.getElementById("memory").innerHTML);
+                _this._curInput = parseInt(document.getElementById("CalcInput").value);
+            };
+            this.validateValues = function (operation) {
+                if (isNaN(_this._curInput)) {
+                    document.getElementById("operationSymbol").innerHTML = _this._operationIcons[operation];
+                    return;
+                }
 
-                if (!isNaN(valueFromMemory)) {
-                    var result = _this.calculateOperation(valueFromMemory, currentInput, operation);
+                if (!isNaN(_this._valFromMem)) {
+                    var result = _this.calculateOperation(_this._valFromMem, _this._curInput, operation);
                     document.getElementById("memory").innerHTML = "" + result;
                 } else {
-                    document.getElementById("memory").innerHTML = "" + currentInput;
+                    document.getElementById("memory").innerHTML = "" + _this._curInput;
                 }
 
                 var inputElement = document.getElementById('CalcInput');
                 inputElement.value = "";
+                inputElement.focus();
                 document.getElementById("operationSymbol").innerHTML = _this._operationIcons[operation];
             };
             this.element = element;
